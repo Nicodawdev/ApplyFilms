@@ -1,215 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--
-    Archivo de configuración de Maven.
-    Define los datos del proyecto, sus dependencias
-    y las herramientas utilizadas para construir la aplicación.
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- Versión del formato POM utilizado en este archivo. -->
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Heredamos la configuración y la gestión de versiones de Spring Boot. -->
     <parent>
-
-        <!-- Grupo al que pertenece el proyecto padre. -->
         <groupId>org.springframework.boot</groupId>
-
-        <!-- POM padre que proporciona la configuración de Spring Boot. -->
         <artifactId>spring-boot-starter-parent</artifactId>
-
-        <!-- Versión de Spring Boot utilizada en la práctica. -->
-        <!-- SNAPSHOT indica que es una versión en desarrollo. -->
         <version>4.1.3-SNAPSHOT</version>
-
-        <!-- Buscamos el POM padre mediante los repositorios de Maven. -->
         <relativePath/>
-
     </parent>
 
-    <!-- Identificador del grupo al que pertenece nuestra aplicación. -->
     <groupId>com.applyfilms</groupId>
-
-    <!-- Identificador del proyecto y nombre base del archivo generado. -->
     <artifactId>apply-films</artifactId>
-
-    <!-- Versión de nuestra aplicación, que todavía está en desarrollo. -->
     <version>0.0.1-SNAPSHOT</version>
-
-    <!-- Nombre descriptivo del proyecto. Actualmente está vacío. -->
     <name/>
-
-    <!-- Descripción del proyecto. Actualmente está vacía. -->
     <description/>
-
-    <!-- Dirección web del proyecto. Actualmente está vacía. -->
     <url/>
 
-    <!-- Información sobre la licencia del proyecto. -->
     <licenses>
         <license/>
     </licenses>
 
-    <!-- Información sobre los desarrolladores del proyecto. -->
     <developers>
         <developer/>
     </developers>
 
-    <!-- Información del sistema de control de versiones, por ejemplo, Git. -->
     <scm>
-
-        <!-- Conexión de lectura al repositorio. -->
         <connection/>
-
-        <!-- Conexión al repositorio para realizar modificaciones. -->
         <developerConnection/>
-
-        <!-- Etiqueta o referencia del código asociada a esta versión. -->
         <tag/>
-
-        <!-- Dirección web del repositorio. -->
         <url/>
-
     </scm>
 
-    <!-- Propiedades de configuración del proyecto. -->
     <properties>
-
-        <!-- Indicamos Java 25 para la compilación de la aplicación. -->
         <java.version>25</java.version>
-
     </properties>
 
-    <!-- Bibliotecas y componentes que necesita nuestra aplicación. -->
     <dependencies>
 
-        <!--
-            Añade Spring MVC para crear la aplicación web.
-            Permite definir controladores REST y atender peticiones HTTP.
-            Su versión está gestionada por Spring Boot.
-        -->
+        <!-- Spring Web MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
-        <!-- Añade herramientas para realizar pruebas de la aplicación web. -->
+        <!-- Pruebas de Spring Web MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
-
-            <!-- Esta dependencia está disponible durante las pruebas. -->
             <scope>test</scope>
         </dependency>
 
-        <!--
-            Integra OpenAI con Spring Boot 4 mediante LangChain4j.
-            Utiliza las propiedades de application.properties
-            para crear y configurar el modelo de conversación.
-        -->
+        <!-- LangChain4j: integración con OpenAI -->
         <dependency>
-
-            <!-- Grupo al que pertenece la biblioteca. -->
             <groupId>dev.langchain4j</groupId>
-
-            <!-- Starter que configura la conexión con OpenAI. -->
             <artifactId>langchain4j-open-ai-spring-boot4-starter</artifactId>
-
-            <!-- Versión de la integración utilizada en esta práctica. -->
             <version>1.23.0-beta33</version>
-
         </dependency>
 
-        <!--
-            Integra los servicios declarativos de LangChain4j con Spring Boot 4.
-            Permite utilizar interfaces anotadas con @AiService.
-            LangChain4j genera sus implementaciones y las registra en Spring.
-        -->
+        <!-- LangChain4j: servicios de IA -->
         <dependency>
-
-            <!-- Grupo al que pertenece la biblioteca. -->
             <groupId>dev.langchain4j</groupId>
-
-            <!-- Starter que permite registrar nuestros servicios de IA. -->
             <artifactId>langchain4j-spring-boot4-starter</artifactId>
-
-            <!-- Utilizamos la misma versión para los dos starters. -->
             <version>1.23.0-beta33</version>
+        </dependency>
 
+        <!-- Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- Docker Compose -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Pruebas de Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
 
-    <!-- Configuración del proceso de construcción de la aplicación. -->
     <build>
-
-        <!-- Plugins que añaden tareas al proceso de construcción. -->
         <plugins>
-
-            <!--
-                Plugin de Spring Boot.
-                Permite ejecutar la aplicación con spring-boot:run
-                y preparar un JAR ejecutable con sus dependencias.
-                Su versión está gestionada por el POM padre.
-            -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
         </plugins>
-
     </build>
 
-    <!-- Repositorios adicionales donde Maven busca dependencias. -->
     <repositories>
-
-        <!-- Repositorio para obtener versiones SNAPSHOT de Spring. -->
         <repository>
-
-            <!-- Identificador del repositorio. -->
             <id>spring-snapshots</id>
-
-            <!-- Nombre descriptivo del repositorio. -->
             <name>Spring Snapshots</name>
-
-            <!-- Dirección desde la que Maven descarga los componentes. -->
             <url>https://repo.spring.io/snapshot</url>
-
-            <!-- Desactivamos la descarga de versiones estables desde este repositorio. -->
             <releases>
                 <enabled>false</enabled>
             </releases>
-
         </repository>
-
     </repositories>
 
-    <!-- Repositorios adicionales donde Maven busca sus plugins. -->
     <pluginRepositories>
-
-        <!-- Repositorio para obtener plugins SNAPSHOT de Spring. -->
         <pluginRepository>
-
-            <!-- Identificador del repositorio de plugins. -->
             <id>spring-snapshots</id>
-
-            <!-- Nombre descriptivo del repositorio. -->
             <name>Spring Snapshots</name>
-
-            <!-- Dirección desde la que Maven descarga los plugins. -->
             <url>https://repo.spring.io/snapshot</url>
-
-            <!-- Desactivamos la descarga de plugins estables desde este repositorio. -->
             <releases>
                 <enabled>false</enabled>
             </releases>
-
         </pluginRepository>
-
     </pluginRepositories>
 
 </project>
