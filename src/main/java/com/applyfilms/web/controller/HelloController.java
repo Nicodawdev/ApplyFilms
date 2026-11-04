@@ -30,6 +30,7 @@ public class HelloController {
 
     // Asociamos la ruta raíz con este método.
     @GetMapping("/hello")
+
     public String hello() {
         // Solicitamos el saludo indicando el nombre de la plataforma.
         return this.aiService.generateGreeting(this.plataforma);
