@@ -3,6 +3,7 @@ package com.applyfilms.persistence;
 import com.applyfilms.domain.dto.MovieDTO;
 import com.applyfilms.domain.repository.MovieRepository;
 import com.applyfilms.persistence.crud.CrudMovieEntity;
+import com.applyfilms.persistence.entity.MovieEntity;
 import com.applyfilms.persistence.mapper.MovieMapper;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,11 @@ public class MovieEntityRepository implements MovieRepository {
     @Override
     public List<MovieDTO> getAll() {
         return this.movieMapper.toDTO(this.crudMovieEntity.findAll());
+    }
+
+    @Override
+    public MovieDTO getById(long id) {
+        MovieEntity movieEntity = this.crudMovieEntity.findById(id).orElse(null);
+        return this.movieMapper.toDTO(movieEntity);
     }
 }
