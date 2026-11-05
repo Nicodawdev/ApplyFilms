@@ -1,8 +1,8 @@
-
 package com.applyfilms.web.controller;
 
 import com.applyfilms.domain.dto.MovieDTO;
 import com.applyfilms.domain.service.MovieService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,15 +24,29 @@ public class MovieController {
     }
 
     // GET: obtiene todas las películas.
+    // Devuelve un código HTTP 200 (OK) con la lista.
     @GetMapping
-    public List<MovieDTO> getAll() {
-        return this.movieService.getAll();
+    public ResponseEntity<List<MovieDTO>> getAll() {
+
+        List<MovieDTO> movies = movieService.getAll();
+
+        return ResponseEntity.ok(movies);
     }
 
     // GET: obtiene una película por su ID.
     @GetMapping("/{id}")
-    public MovieDTO getById(@PathVariable long id) {
-        return this.movieService.getById(id);
+    public ResponseEntity<MovieDTO> getById(@PathVariable long id) {
+
+        MovieDTO movie = movieService.getById(id);
+
+        // Si no encontramos la película, devolvemos 404.
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Si existe, devolvemos 200 OK con sus datos.
+        return ResponseEntity.ok(movie);
     }
 }
+
 
