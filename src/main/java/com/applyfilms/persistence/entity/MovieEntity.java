@@ -1,5 +1,4 @@
-// Clase que representa una tabla en la BBDD.
-// Mapeamos los atributos de Java con las columnas de la tabla.
+// Entidad que relaciona los atributos Java con las columnas de la tabla.
 package com.applyfilms.persistence.entity;
 
 import jakarta.persistence.Column;
@@ -16,8 +15,7 @@ import java.time.LocalDate;
 @Table(name = "ApplyFilms_peliculas")
 public class MovieEntity {
 
-    // Identificador único de cada película.
-    // Se genera automáticamente en la base de datos.
+    // Identificador generado automáticamente por la base de datos.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +24,7 @@ public class MovieEntity {
     @Column(nullable = false, length = 150, unique = true)
     private String titulo;
 
-    // Duración de la película en minutos.
+    // Duración obligatoria, expresada en minutos.
     @Column(nullable = false)
     private Integer duracion;
 
@@ -34,15 +32,15 @@ public class MovieEntity {
     @Column(nullable = false, length = 40)
     private String genero;
 
-    // Fecha de estreno de la película.
+    // Nombre de la columna correspondiente a la fecha de estreno.
     @Column(name = "fecha_estreno")
     private LocalDate fechaEstreno;
 
-    // Clasificación decimal: 3 dígitos en total y 2 decimales.
+    // Clasificación con tres dígitos en total y dos decimales.
     @Column(precision = 3, scale = 2)
     private BigDecimal clasificacion;
 
-    // Estado de la película, representado por un carácter.
+    // Estado obligatorio, representado mediante un carácter.
     @Column(nullable = false, length = 1)
     private String estado;
 
@@ -50,8 +48,7 @@ public class MovieEntity {
     public MovieEntity() {
     }
 
-    // Métodos getters y setters.
-
+    // Consultamos y modificamos el identificador.
     public Long getId() {
         return id;
     }
@@ -60,6 +57,7 @@ public class MovieEntity {
         this.id = id;
     }
 
+    // Consultamos y modificamos el título.
     public String getTitulo() {
         return titulo;
     }
@@ -68,6 +66,7 @@ public class MovieEntity {
         this.titulo = titulo;
     }
 
+    // Consultamos y modificamos la duración.
     public Integer getDuracion() {
         return duracion;
     }
@@ -76,6 +75,7 @@ public class MovieEntity {
         this.duracion = duracion;
     }
 
+    // Consultamos y modificamos el género.
     public String getGenero() {
         return genero;
     }
@@ -84,6 +84,7 @@ public class MovieEntity {
         this.genero = genero;
     }
 
+    // Consultamos y modificamos la fecha de estreno.
     public LocalDate getFechaEstreno() {
         return fechaEstreno;
     }
@@ -92,6 +93,7 @@ public class MovieEntity {
         this.fechaEstreno = fechaEstreno;
     }
 
+    // Consultamos y modificamos la clasificación.
     public BigDecimal getClasificacion() {
         return clasificacion;
     }
@@ -100,10 +102,13 @@ public class MovieEntity {
         this.clasificacion = clasificacion;
     }
 
+    // Consultamos el estado de esta película.
     public String getEstado() {
         return estado;
     }
 
+    // Modificamos el estado de esta película.
+    // Al ser un método de instancia, podemos utilizar this.
     public void setEstado(String estado) {
         this.estado = estado;
     }

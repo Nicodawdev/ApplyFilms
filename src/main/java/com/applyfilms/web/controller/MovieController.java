@@ -2,11 +2,9 @@ package com.applyfilms.web.controller;
 
 import com.applyfilms.domain.dto.MovieDTO;
 import com.applyfilms.domain.service.MovieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,6 +44,12 @@ public class MovieController {
 
         // Si existe, devolvemos 200 OK con sus datos.
         return ResponseEntity.ok(movie);
+    }
+
+    @PostMapping
+    public ResponseEntity<MovieDTO> add(@RequestBody MovieDTO movieDTO) {
+        MovieDTO movieDTOResponse = this.movieService.add(movieDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(movieDTOResponse);
     }
 }
 

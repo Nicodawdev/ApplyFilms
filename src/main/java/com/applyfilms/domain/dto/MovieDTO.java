@@ -5,6 +5,7 @@ import com.applyfilms.domain.Genre;
 import java.time.LocalDate;
 
 public record MovieDTO(
+        Long id,
         String title,
         Integer duration,
         Genre genre,
