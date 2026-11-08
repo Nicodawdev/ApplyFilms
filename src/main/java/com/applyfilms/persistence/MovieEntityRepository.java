@@ -2,6 +2,7 @@ package com.applyfilms.persistence;
 
 import com.applyfilms.domain.dto.MovieDTO;
 import com.applyfilms.domain.dto.UpdateMovieDTO;
+import com.applyfilms.domain.exception.MovieAlreadyExistException;
 import com.applyfilms.domain.repository.MovieRepository;
 import com.applyfilms.persistence.crud.CrudMovieEntity;
 import com.applyfilms.persistence.entity.MovieEntity;
@@ -45,6 +46,10 @@ public class MovieEntityRepository implements MovieRepository {
     // Creamos una película.
     @Override
     public MovieDTO save(MovieDTO movieDTO) {
+        if (this.crudMovieEntity.findFirstByTitulo(movieDTO.title())!=null) {
+            throw new MovieAlreadyExistException(movieDTO.title());
+        }
+
         MovieEntity movieEntity = this.movieMapper.toEntity(movieDTO);
 
         movieEntity.setEstado("0");
