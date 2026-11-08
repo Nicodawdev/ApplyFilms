@@ -37,4 +37,9 @@ public class MovieService {
     public MovieDTO update(long id, UpdateMovieDTO updateMovieDTO) {
         return this.movieRepository.update(id, updateMovieDTO);
     }
+
+    // Solicitamos la eliminación de una película.
+    public boolean delete(long id) {
+        return this.movieRepository.delete(id);
+    }
 }

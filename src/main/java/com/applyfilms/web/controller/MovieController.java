@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -70,6 +71,20 @@ public class MovieController {
         }
 
         return ResponseEntity.ok(updatedMovie);
+    }
+
+    // Eliminamos una película por su identificador.
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        boolean deleted = this.movieService.delete(id);
+
+        // Si no existe, devolvemos 404.
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // La eliminación se ha realizado correctamente.
+        return ResponseEntity.noContent().build();
     }
 }
 
