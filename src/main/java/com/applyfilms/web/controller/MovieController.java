@@ -70,7 +70,8 @@ public class MovieController {
                 .body(createdMovie);
     }
 
-    // Actualizamos una película existente.
+    // Actualizamos una película.
+    // Si no existe, la excepción se gestiona en RestExceptionHandler.
     @PutMapping("/{id}")
     public ResponseEntity<MovieDTO> update(
             @PathVariable long id,
@@ -78,21 +79,14 @@ public class MovieController {
     ) {
         MovieDTO updatedMovie = this.movieService.update(id, updateMovieDTO);
 
-        if (updatedMovie == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(updatedMovie);
     }
 
-    // Eliminamos una película por su identificador.
+    // Eliminamos una película.
+    // Si no existe, la excepción se gestiona en RestExceptionHandler.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
-        boolean deleted = this.movieService.delete(id);
-
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
+        this.movieService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
