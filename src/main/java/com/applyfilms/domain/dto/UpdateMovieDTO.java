@@ -1,5 +1,6 @@
 package com.applyfilms.domain.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -15,7 +16,7 @@ public record UpdateMovieDTO(
         LocalDate releaseDate,
 
         @Min(value = 0, message = "El rating no puede ser menor que 0")
-        @Min(value = 5, message = "El rating no puede ser mayor que 5")
+        @Max(value = 5, message = "El rating no puede ser mayor que 5")
         Double rating
 ) {
 }
