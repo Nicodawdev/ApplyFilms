@@ -1,0 +1,458 @@
+{
+  "info": {
+    "_postman_id": "d3732b0b-8953-4616-9ea0-afb8c3ce7714",
+    "name": "AppyFilms",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59414696",
+    "_collection_link": "https://go.postman.co/collection/59414696-d3732b0b-8953-4616-9ea0-afb8c3ce7714?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Consultas",
+      "item": [
+        {
+          "name": "Lista Película",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Consultar Película",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Saludo Langchaing4J",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Crear",
+      "item": [
+        {
+          "name": "Crear película de prueba",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Película creada\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nif (pm.response.code === 201) {\r\n    const movie = pm.response.json();\r\n    pm.collectionVariables.set(\"movieId\", movie.id);\r\n    pm.collectionVariables.set(\"movieTitle\", movie.title);\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Prueba CRUD {{$timestamp}}\",\r\n    \"duration\": 100,\r\n    \"genre\": \"COMEDY\",\r\n    \"releaseDate\": \"2020-01-01\",\r\n    \"rating\": 4.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Actualizar",
+      "item": [
+        {
+          "name": "Actualizar película de prueba",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Shrek actualizado correctamente\", function () {\r\n    pm.response.to.have.status(200);\r\n    const movie = pm.response.json();\r\n    pm.expect(movie.id).to.equal(1);\r\n    pm.expect(movie.title).to.equal(\"Shrek\");\r\n    pm.expect(movie.rating).to.equal(4.5);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Shrek\",\r\n    \"releaseDate\": \"2024-06-01\",\r\n    \"rating\": 4.5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Eliminación",
+      "item": [
+        {
+          "name": "Eliminar Shrek",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Shrek actualizado correctamente\", function () {\r\n    pm.response.to.have.status(200);\r\n    const movie = pm.response.json();\r\n    pm.expect(movie.id).to.equal(1);\r\n    pm.expect(movie.title).to.equal(\"Shrek\");\r\n    pm.expect(movie.rating).to.equal(4.5);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Shrek\",\r\n    \"releaseDate\": \"2024-06-01\",\r\n    \"rating\": 4.5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "IA",
+      "item": [
+        {
+          "name": "Recomendar películas del catálogo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userPreferences\": \"Me gustan las películas de ciencia ficción y viajes espaciales.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/suggest",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "suggest"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Errores y Validaciones",
+      "item": [
+        {
+          "name": "Consultar ID inexistente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/999999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualización válida de un ID inexistente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Película inexistente\",\r\n    \"releaseDate\": \"2020-01-01\",\r\n    \"rating\": 4.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/999999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar ID inexistente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/999999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear título duplicado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Interstellar\",\r\n    \"duration\": 169,\r\n    \"genre\": \"SCI_FI\",\r\n    \"releaseDate\": \"2014-11-07\",\r\n    \"rating\": 5.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear con datos inválidos",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"\",\r\n    \"duration\": -10,\r\n    \"genre\": null,\r\n    \"releaseDate\": \"2099-01-01\",\r\n    \"rating\": 6.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear con datos incompletos",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar con datos inválidos",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"\",\r\n    \"releaseDate\": \"2099-01-01\",\r\n    \"rating\": 6.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8090/applyfilms/api/movies/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8090",
+              "path": [
+                "applyfilms",
+                "api",
+                "movies",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "movieId",
+      "value": ""
+    },
+    {
+      "key": "movieTitle",
+      "value": ""
+    }
+  ]
+}

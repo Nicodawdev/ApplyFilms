@@ -1,18 +1,14 @@
 package com.applyfilms.web.controller;
 
 import com.applyfilms.domain.dto.MovieDTO;
+import com.applyfilms.domain.dto.SuggestRequestDTO;
 import com.applyfilms.domain.dto.UpdateMovieDTO;
+import com.applyfilms.domain.service.ApplyFilmsAiService;
 import com.applyfilms.domain.service.MovieService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,16 +18,17 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final ApplyFilmsAiService aiService;
 
-    // Inyectamos el servicio.
-    public MovieController(MovieService movieService) {
+    // Inyectamos el servicio de películas y el servicio de IA.
+    public MovieController(MovieService movieService, ApplyFilmsAiService aiService) {
         this.movieService = movieService;
+        this.aiService = aiService;
     }
 
     // Consultamos todas las películas.
     @GetMapping
-    public ResponseEntity<List<MovieDTO>> getAll() {
-        List<MovieDTO> movies = this.movieService.getAll();
+    public ResponseEntity<List<MovieDTO>> getAll() {List<MovieDTO> movies = this.movieService.getAll();
 
         return ResponseEntity.ok(movies);
     }
@@ -48,43 +45,38 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
-    // Creamos una película.
-    @PostMapping
-    public ResponseEntity<MovieDTO> add(@RequestBody MovieDTO movieDTO) {
-        MovieDTO createdMovie = this.movieService.add(movieDTO);
+    // Generamos recomendaciones según las preferencias del usuario.
+    @PostMapping("/suggest")
+    public ResponseEntity<String> generateMoviesSuggestion(@RequestBody SuggestRequestDTO suggestRequestDTO) {
+        String suggestion = this.aiService.generateMoviesSuggestion(
+                suggestRequestDTO.userPreferences()
+        );
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdMovie);
+        return ResponseEntity.ok(suggestion);
     }
 
-    // Actualizamos una película existente.
-    @PutMapping("/{id}")
-    public ResponseEntity<MovieDTO> update(
-            @PathVariable long id,
-            @RequestBody UpdateMovieDTO updateMovieDTO
-    ) {
-        MovieDTO updatedMovie = this.movieService.update(id, updateMovieDTO);
+    // Validamos los datos antes de crear la película.
+    @PostMapping
+    public ResponseEntity<MovieDTO> add(@Valid @RequestBody MovieDTO movieDTO) {
+        MovieDTO createdMovie = this.movieService.add(movieDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMovie);
+    }
 
-        if (updatedMovie == null) {
-            return ResponseEntity.notFound().build();
-        }
+    // Actualizamos una película.
+    // Si no existe, la excepción se gestiona en RestExceptionHandler.
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieDTO> update(@PathVariable long id, @RequestBody @Valid UpdateMovieDTO updateMovieDTO) {
+        MovieDTO updatedMovie = this.movieService.update(id, updateMovieDTO);
 
         return ResponseEntity.ok(updatedMovie);
     }
 
-    // Eliminamos una película por su identificador.
+    // Eliminamos una película.
+    // Si no existe, la excepción se gestiona en RestExceptionHandler.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
-        boolean deleted = this.movieService.delete(id);
+        this.movieService.delete(id);
 
-        // Si no existe, devolvemos 404.
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // La eliminación se ha realizado correctamente.
         return ResponseEntity.noContent().build();
     }
 }
-
