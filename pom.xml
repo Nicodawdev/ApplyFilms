@@ -2,12 +2,10 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Configuración principal de Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,14 +13,12 @@
         <relativePath/>
     </parent>
 
-    <!-- Información del proyecto -->
     <groupId>com.applyfilms</groupId>
     <artifactId>apply-films</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ApplyFilms</name>
     <description>Aplicación web con Spring Boot e IA</description>
 
-    <!-- Versiones y codificación del proyecto -->
     <properties>
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,40 +28,53 @@
 
     <dependencies>
 
-        <!-- Desarrollo de controladores y API REST -->
+        <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
-        <!-- Pruebas de controladores web -->
+        <!-- Pruebas de Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Integración de OpenAI con LangChain4j -->
+        <!-- Validación de datos -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Pruebas de validación -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- OpenAI con LangChain4j -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-open-ai-spring-boot4-starter</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
 
-        <!-- Servicios de inteligencia artificial -->
+        <!-- Servicios de IA con LangChain4j -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-spring-boot4-starter</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
 
-        <!-- Persistencia con Spring Data JPA -->
+        <!-- Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Integración con Docker Compose -->
+        <!-- Docker Compose -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
@@ -73,7 +82,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Controlador JDBC para PostgreSQL -->
+        <!-- PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -87,12 +96,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Conversión de objetos con MapStruct -->
+        <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+        <!-- Spring Boot Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -102,8 +113,6 @@
 
     <build>
 
-        <!-- Copiamos los recursos sin filtrado Maven -->
-        <!-- Evitamos errores al procesar archivos.properties -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -113,24 +122,19 @@
 
         <plugins>
 
-            <!-- Generación y ejecución de Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Compilación del proyecto con Java 25 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.1</version>
 
                 <configuration>
-
-                    <!-- Versión de Java utilizada -->
                     <release>${java.version}</release>
 
-                    <!-- Procesador de anotaciones de MapStruct -->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
@@ -138,7 +142,6 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-
                 </configuration>
             </plugin>
 
