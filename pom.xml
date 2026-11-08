@@ -22,9 +22,10 @@
     <name>ApplyFilms</name>
     <description>Aplicación web con Spring Boot e IA</description>
 
-    <!-- Versiones utilizadas en el proyecto -->
+    <!-- Versiones y codificación del proyecto -->
     <properties>
         <java.version>25</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <langchain4j.version>1.23.0-beta33</langchain4j.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
@@ -58,7 +59,7 @@
             <version>${langchain4j.version}</version>
         </dependency>
 
-        <!-- Persistencia de datos con Spring Data JPA -->
+        <!-- Persistencia con Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -79,23 +80,37 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Pruebas para Spring Data JPA -->
+        <!-- Pruebas de Spring Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Conversión de objetos Java con MapStruct -->
+        <!-- Conversión de objetos con MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
     </dependencies>
 
     <build>
+
+        <!-- Copiamos los recursos sin filtrado Maven -->
+        <!-- Evitamos errores al procesar archivos.properties -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
         <plugins>
 
             <!-- Generación y ejecución de Spring Boot -->
@@ -131,3 +146,4 @@
     </build>
 
 </project>
+
