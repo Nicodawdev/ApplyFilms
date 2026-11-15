@@ -1,0 +1,202 @@
+### ApplyFilms - Pruebas de la API (perfil dev, datos precargados)
+### Ejecutar en orden desde IntelliJ IDEA tras arrancar la aplicación
+
+@base = http://localhost:8080/api/peliculas
+
+### ---------------- CASOS DE ÉXITO ----------------
+
+### 1. GET listado completo -> 200
+GET {{base}}
+
+### 2. GET por ID -> 200
+GET {{base}}/7
+
+### 3. GET búsqueda por título (findByTituloContainingIgnoreCase) -> 200
+GET {{base}}/buscar?titulo=el
+
+### 4. GET búsqueda por valoración mínima (findByClasificacionGreaterThanEqual) -> 200
+GET {{base}}/valoradas?minimo=4.5
+
+### 5. POST crear película -> 201
+POST {{base}}
+Content-Type: application/json
+
+{
+  "titulo": "Dune",
+  "duracion": 155,
+  "genero": "CIENCIA_FICCION",
+  "fechaEstreno": "2021-09-17",
+  "clasificacion": 4.3,
+  "idioma": "en",
+  "emailDistribuidora": "info@warnerbros.com",
+  "disponible": true,
+  "etiquetas": ["desierto", "villeneuve"],
+  "derechosConfirmados": true
+}
+
+### 6. PUT reemplazo completo -> 200
+PUT {{base}}/1
+Content-Type: application/json
+
+{
+  "titulo": "Shrek 2",
+  "duracion": 93,
+  "genero": "ANIMADA",
+  "fechaEstreno": "2004-05-19",
+  "clasificacion": 4.0,
+  "idioma": "en",
+  "emailDistribuidora": "info@dreamworks.com",
+  "disponible": true,
+  "etiquetas": ["ogro", "secuela"],
+  "derechosConfirmados": true
+}
+
+### 7. PATCH modificación parcial (solo cambia la clasificación) -> 200
+PATCH {{base}}/2
+Content-Type: application/json
+
+{
+  "clasificacion": 4.9
+}
+
+### 8. DELETE película no disponible -> 204 (sin cuerpo)
+DELETE {{base}}/4
+
+### 9. MASHUP BD local + TMDB (1ª llamada: va a TMDB, más lenta) -> 200
+GET {{base}}/7/mashup
+
+### 10. MASHUP repetido (sale de la caché RAM, mucho más rápido; mira el tiempo y el log) -> 200
+GET {{base}}/7/mashup
+
+### 11. Recomendación con IA (necesita OPENAI_API_KEY) -> 200
+POST {{base}}/recomendar
+Content-Type: application/json
+
+{
+  "preferencias": "Me gusta la ciencia ficción con buena nota"
+}
+
+### 12. Saludo con IA (necesita OPENAI_API_KEY) -> 200
+GET http://localhost:8080/api/hello
+
+### ---------------- CASOS DE ERROR ----------------
+
+### 13. GET ID inexistente -> 404 (RecursoNoEncontradoException)
+GET {{base}}/999
+
+### 14. GET con ID que no es un número -> 400
+GET {{base}}/abc
+
+### 15. POST con datos inválidos -> 400 con erroresCampo
+### (título vacío, duración negativa, fecha futura, clasificación con 2 decimales,
+###  idioma mal escrito, email incorrecto, demasiadas etiquetas, derechos sin confirmar)
+POST {{base}}
+Content-Type: application/json
+
+{
+  "titulo": "",
+  "duracion": -10,
+  "genero": "DRAMA",
+  "fechaEstreno": "2999-01-01",
+  "clasificacion": 4.55,
+  "idioma": "ESP",
+  "emailDistribuidora": "esto-no-es-un-email",
+  "disponible": true,
+  "etiquetas": ["a", "b", "c", "d", "e", "f"],
+  "derechosConfirmados": false
+}
+
+### 16. POST con campos obligatorios ausentes -> 400
+POST {{base}}
+Content-Type: application/json
+
+{
+  "titulo": "Solo título"
+}
+
+### 17. POST con género que no existe -> 400 (JSON no legible)
+POST {{base}}
+Content-Type: application/json
+
+{
+  "titulo": "Película del oeste",
+  "duracion": 100,
+  "genero": "WESTERN",
+  "fechaEstreno": "1966-12-23",
+  "idioma": "it",
+  "emailDistribuidora": "info@western.com",
+  "disponible": true,
+  "derechosConfirmados": true
+}
+
+### 18. POST con título repetido -> 409 (DataIntegrityViolationException, UNIQUE)
+POST {{base}}
+Content-Type: application/json
+
+{
+  "titulo": "Titanic",
+  "duracion": 195,
+  "genero": "DRAMA",
+  "fechaEstreno": "1997-12-19",
+  "idioma": "en",
+  "emailDistribuidora": "info@paramount.com",
+  "disponible": true,
+  "derechosConfirmados": true
+}
+
+### 19. PUT sobre ID inexistente -> 404
+PUT {{base}}/999
+Content-Type: application/json
+
+{
+  "titulo": "No existe",
+  "duracion": 100,
+  "genero": "DRAMA",
+  "fechaEstreno": "2000-01-01",
+  "idioma": "es",
+  "emailDistribuidora": "info@test.com",
+  "disponible": true,
+  "derechosConfirmados": true
+}
+
+### 20. PATCH con datos inválidos -> 400
+PATCH {{base}}/2
+Content-Type: application/json
+
+{
+  "duracion": 0,
+  "emailDistribuidora": "mal-email"
+}
+
+### 21. PATCH sobre ID inexistente -> 404
+PATCH {{base}}/999
+Content-Type: application/json
+
+{
+  "clasificacion": 3.0
+}
+
+### 22. PATCH poniendo un título que ya existe -> 409
+PATCH {{base}}/2
+Content-Type: application/json
+
+{
+  "titulo": "Titanic"
+}
+
+### 23. DELETE película disponible -> 422 (ReglaNegocioException)
+DELETE {{base}}/7
+
+### 24. DELETE ID inexistente -> 404
+DELETE {{base}}/999
+
+### 25. MASHUP de ID inexistente -> 404
+GET {{base}}/999/mashup
+
+### 26. Recomendación con preferencias vacías -> 400
+POST {{base}}/recomendar
+Content-Type: application/json
+
+{
+  "preferencias": ""
+}
